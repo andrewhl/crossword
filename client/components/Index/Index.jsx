@@ -49,10 +49,7 @@ const getDataFromLetterObjs = letterObjs => {
   return crossword;
 };
 
-function process(wordList) {
-  const letterObjs = getLetterObjsFromWordList(wordList);
-  return getDataFromLetterObjs(letterObjs);
-};
+const process = R.compose(getDataFromLetterObjs, getLetterObjsFromWordList);
 
 const getLetterObjs = ({ word, position, direction }) => {
     const startX = position[0];
