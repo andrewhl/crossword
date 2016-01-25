@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Crossword from '../Crossword/Crossword.jsx';
+import { generateCrosswordPattern } from '../../../lib/crossword_utils';
 import R from 'ramda';
 
 const crosswordData = [
@@ -60,7 +61,8 @@ const getLetterObjs = ({ word, position, direction }) => {
     return mapIndexed(curriedBuildLetterObject, word.split(''));
 };
 
-const processedCrossword = process(crosswordData);
+// const processedCrossword = process(crosswordData);
+const processedCrossword = generateCrosswordPattern().map(row => row.map(c => c === 1 ? c : ''));
 
 class IndexComponent extends Component {
   render() {
