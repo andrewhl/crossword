@@ -61,8 +61,8 @@ const getLetterObjs = ({ word, position, direction }) => {
     return mapIndexed(curriedBuildLetterObject, word.split(''));
 };
 
-// const processedCrossword = process(crosswordData);
-const processedCrossword = generateCrosswordPattern().map(row => row.map(c => c === 1 ? c : ''));
+const splitCrossWordPattern = pattern => pattern.map(p => p.split('').map(t => parseInt(t, 10)));
+const processedCrossword = splitCrossWordPattern(generateCrosswordPattern()).map(row => row.map(c => c === 1 ? c : ''));
 
 class IndexComponent extends Component {
   render() {
