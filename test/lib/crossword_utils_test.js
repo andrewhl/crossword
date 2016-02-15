@@ -1,6 +1,49 @@
-// import { expect } from 'chai';
+import { expect } from 'chai';
 // import R from 'ramda';
-//
+
+import {
+  fixInvalidWords,
+  generateCrosswordPattern,
+} from '../../lib/crossword_utils.js';
+
+const h = row => row.replace(/0/g, '-');
+const z = row => row.replace(/\-/g, '0');
+const setRow = (grid, rowNumber, row) => grid[rowNumber - 1] = row;
+const getRow = (grid, rowNumber) => grid[rowNumber - 1];
+
+describe('fixInvalidWords', () => {
+  let grid;
+
+  beforeEach(() => {
+    grid = generateCrosswordPattern();
+  });
+
+  it('joins a leading invalid pattern to a valid pattern', () => {
+    setRow(grid, 1, z('-111-1111-1111-'));
+    expect(h(getRow(fixInvalidWords(grid), 1))).to.equal('-11111111-1111-');
+  });
+
+  it('joins a trailing invalid pattern to a valid pattern', () => {
+    setRow(grid, 1, z('-111111111-111-'));
+    expect(h(getRow(fixInvalidWords(grid), 1))).to.equal('-1111111111111-');
+  });
+
+  it('joins two leading invalid patterns together', () => {
+    setRow(grid, 1, z('-1-111-11111'));
+    expect(h(getRow(fixInvalidWords(grid), 1))).to.equal('-11111-11111');
+  });
+
+  it('joins two starting invalid patterns together', () => {
+    setRow(grid, 1, z('1-111-11111'));
+    expect(h(getRow(fixInvalidWords(grid), 1))).to.equal('11111-11111');
+  });
+
+  it('joins to trailing invalid patterns together', () => {
+    setRow(grid, 1, z('11111-11-111'));
+    expect(h(getRow(fixInvalidWords(grid), 1))).to.equal('11111-111111');
+  });
+});
+
 // import {
 //   adjustCenterTile,
 //   generateCrosswordPattern,
