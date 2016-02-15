@@ -10,14 +10,23 @@ table {
   border-collapse: collapse;
 }
 
-td div {
-  border: 1px solid grey;
-  height: 15px;
-  width: 15px;
-  padding: 3px;
-  text-align: center;
-  background-color: white;
-  &.empty {
-    background-color: black;
+td {
+  div {
+    border: 1px solid grey;
+    height: 15px;
+    width: 15px;
+    padding: 3px;
+    text-align: center;
+    background-color: white;
+    &.empty {
+      background-color: black;
+    }
+  }
+
+  &.number {
+    color: #777;
+    font-size: .7rem;
+    font-weight: bold;
+    text-align: center;
   }
 }
