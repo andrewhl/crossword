@@ -1,39 +1,83 @@
-import React, { Component } from 'react';
+import React, {
+  PropTypes
+} from 'react';
 import R from 'ramda';
 
 const mapWithIndex = R.addIndex(R.map);
 
-export default class Crossword extends Component {
+const numberify = string => {
+  let computedString = [];
+  let tempCount = 0;
+  R.addIndex(R.map)(
+    (letter, index) => {
+      if (parseInt(letter, 10) === 0) {
+        computedString.push(tempCount);
+        tempCount = 0;
+      } else {
 
-  render() {
-    const rows = mapWithIndex(this.createRow.bind(this), this.props.data);
+        if (typeof(string[index + 1]) === 'undefined') {
+          computedString.push(tempCount);
+          tempCount = 0;
+          return;
+        }
 
-    return (
-      <table>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    )
-  }
+        tempCount += 1;
 
-  createRow(row, index) {
-    const cells = mapWithIndex(this.createCell.bind(this), row);
+        if (parseInt(string[index + 1], 10) === 0) {
+          computedString.push(tempCount);
+          tempCount = 0;
+        }
+      }
+    }, string
+  );
+
+  return computedString.join('');
+}
+
+export default class Crossword extends React.Component {
+  static propTypes = {
+    data: PropTypes.array
+  };
+
+  renderColumnNumbersRow = () => <tr>
+    <td></td>
+    {mapWithIndex(i => <td key={i} className="number">{i + 1}</td>, R.range(0, 15))}
+  </tr>;
+
+  renderRow = (row, index) => {
+
 
     return (
       <tr key={index}>
-        {cells}
+        <td className="number">{index + 1}</td>
+        {mapWithIndex(this.renderCell.bind(this), row)}
       </tr>
-    )
-  }
+    );
+  };
 
-  createCell(cell, index) {
-    const className = (cell !== '') ? '' : 'empty';
+  renderCell = (cell, index) => {
+    const className = (cell !== '')
+      ? ''
+      : 'empty';
 
     return (
       <td key={index}>
         <div className={className}>{cell}</div>
       </td>
-    )
+    );
+  };
+
+  render () {
+    console.log('Numberify: ', numberify('01101110111111'));
+
+    // console.log('Numberify: ', numberify('11101110111111'));
+    return (
+      <table>
+        <tbody>
+          {this.renderColumnNumbersRow()}
+          {mapWithIndex(this.renderRow.bind(this), this.props.data)}
+        </tbody>
+      </table>
+    );
   }
 }
