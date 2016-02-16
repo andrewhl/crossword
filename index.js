@@ -38,7 +38,7 @@ app.get('/*', function(req, res) {
 
 var port = Number(process.env.PORT || 3001);
 app.listen(port, function () {
-  console.log('server running at localhost:3001, go refresh and see magic');
+  console.log('server running at http://localhost:3001/');
 });
 
 if (env.production === false) {
@@ -63,6 +63,6 @@ if (env.production === false) {
       console.log(err);
     }
 
-    console.log('webpack dev server listening on localhost:3000');
+    console.log('webpack dev server listening on http://localhost:3000/');
   });
 }
