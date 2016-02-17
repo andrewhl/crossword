@@ -1,74 +1,47 @@
+import classNames from 'classnames';
 import React, { PropTypes } from 'react';
 import R from 'ramda';
 
+import { isWhiteTile } from 'lib/crossword_utils.js';
+
 const mapWithIndex = R.addIndex(R.map);
-
-const numberify = string => {
-  // R.replace(/(1)+/g, )
-  console.log('Numberify:', string);
-
-  // const oneCounts = R.split('0', string).map(ones => {
-  //   return ones.length;
-  // });
-  let computedString = [];
-  let tempCount = 0;
-  R.map(letter => {
-    console.log(tempCount);
-    if (parseInt(letter, 10) === 0) {
-      computedString.push(tempCount);
-      tempCount = 0;
-    }
-    tempCount += parseInt(letter, 10);
-  }, string);
-  // R.addIndex(R.forEach)((item, index) => {
-  // }, string);
-
-  return computedString;
-
-  // return oneCounts;
-  // return string.match(/(1)+/g)[2].length;
-};
 
 export default class Crossword extends React.Component {
   static propTypes = {
-    data: PropTypes.array,
+    crossword: PropTypes.array,
   };
 
   renderColumnNumbersRow = () =>
     <tr>
       <td></td>
-      {mapWithIndex(i => <td key={i} className="number">{i + 1}</td>, R.range(0, 15))}
+      {R.range(0, 15).map(i => <td key={i} className="cCrossword_number">{i + 1}</td>)}
     </tr>
   ;
 
   renderRow = (row, index) =>
     <tr key={index}>
-      <td className="number">{index + 1}</td>
-      {mapWithIndex(this.renderCell.bind(this), row)}
+      <td className="cCrossword_number">{index + 1}</td>
+      {mapWithIndex(this.renderTile, row)}
     </tr>
   ;
 
-  renderCell = (cell, index) => {
-    const className = (cell !== '')
-      ? ''
-      : 'empty';
-
+  renderTile = (tile, index) => {
+    const className = classNames('cCrossword_tile', isWhiteTile(tile) ? '-white' : '-black');
     return (
       <td key={index}>
-        <div className={className}>{cell}</div>
+        <div className={className}>{tile}</div>
       </td>
     );
   };
 
   render() {
-    console.log('Numberify: ', numberify('01101110111111'));
+    const { crossword } = this.props;
 
-    // console.log('Numberify: ', numberify('11101110111111'));
     return (
-      <table>
+      <table className="cCrossword">
         <tbody>
           {this.renderColumnNumbersRow()}
-          {mapWithIndex(this.renderRow.bind(this), this.props.data)}
+          {mapWithIndex(this.renderRow, crossword)}
         </tbody>
       </table>
     );

@@ -1,0 +1,29 @@
+@import '~shared/variables';
+
+.cCrossword {
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  &_tile {
+    border: 1px solid $gray600;
+    height: 15px;
+    padding: 3px;
+    text-align: center;
+    width: 15px;
+
+    &.-white {
+      background-color: $gray100;
+    }
+
+    &.-black {
+      background-color: $gray900;
+    }
+  }
+
+  &_number {
+    color: $gray400;
+    font-size: .7rem;
+    font-weight: bold;
+    text-align: center;
+  }
+}
