@@ -30,13 +30,15 @@ module.exports = {
   },
 
   resolve: {
-    root: path.join(__dirname, ''),
+    root: [
+      path.join(__dirname, ''),
+      path.join(__dirname, 'client'),
+    ],
     modulesDirectories: [
       'web_modules',
       'node_modules',
-      'client'
     ],
-    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
   },
 
   plugins: [
@@ -44,15 +46,18 @@ module.exports = {
       __DEV__: env.development,
       __STAGING__: env.staging,
       __PRODUCTION__: env.production,
-      __CURRENT_ENV__: '\'' + (NODE_ENV) + '\''
-    })
+      __CURRENT_ENV__: `'${NODE_ENV}'`,
+    }),
   ],
 
   module: {
     loaders: [
-      {test: /\.scss$/, loader: 'style!css!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded'}
+      {
+        test: /\.scss$/,
+        loader: 'style!css!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded',
+      },
     ],
 
-    noParse: /\.min\.js/
-  }
+    noParse: /\.min\.js/,
+  },
 };
