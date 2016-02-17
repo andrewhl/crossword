@@ -1,3 +1,5 @@
+import './Crossword.scss';
+
 import classNames from 'classnames';
 import React, { PropTypes } from 'react';
 import R from 'ramda';
